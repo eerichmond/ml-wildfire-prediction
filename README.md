@@ -8,12 +8,10 @@ One topic I am passionate about is the environment, especially the impact that c
 
 ### [Kaggle: Predict Droughts using Weather & Soil Data](https://www.kaggle.com/cdminix/us-drought-meteorological-data)
 
-- [CSV zip](data/droughts)
+- 3 CSV zip files with 23,841,471 records
 - License CC0: Public Domain
-- 23,841,471 records
 
 ### [Kaggle: 1.88 Million US Wildfires](https://www.kaggle.com/rtatman/188-million-us-wildfires)
 
-- [Sqlite zip](data/wildfires.zip)
+- Sqlite zip with 1,880,456 records
 - License CC0: Public Domain
-- 1,880,456 records
