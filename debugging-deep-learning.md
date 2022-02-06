@@ -37,3 +37,8 @@
 2. Random search
 3. Coarse-to-fine selection (best)
 4. Bayesian
+
+## Debugging Tools
+
+- ipdb.self_trace
+- tfdb and tf.data for TensorFlow
