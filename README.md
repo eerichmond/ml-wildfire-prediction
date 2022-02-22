@@ -10,6 +10,7 @@ One topic I am passionate about is the environment, especially the impact that c
 
 - 3 zipped csv files with 23,841,471 records
 - License CC0: Public Domain
+- [Drought notebooks](https://github.com/MiniXC/droughted_scripts)
 
 ### [Kaggle: 1.88 Million US Wildfires](https://www.kaggle.com/rtatman/188-million-us-wildfires)
 
