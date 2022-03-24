@@ -16,3 +16,4 @@ One topic I am passionate about is the environment, especially the impact that c
 
 - Sqlite zip with 1,880,456 records
 - License CC0: Public Domain
+- Newer version of the data (up to 2018) at [US Forest Service](https://www.fs.usda.gov/rds/archive/Catalog/RDS-2013-0009.5)
