@@ -17,3 +17,10 @@ One topic I am passionate about is the environment, especially the impact that c
 - Sqlite zip with 1,880,456 records
 - License CC0: Public Domain
 - Newer version of the data (up to 2018) at [US Forest Service](https://www.fs.usda.gov/rds/archive/Catalog/RDS-2013-0009.5)
+
+### How to Train
+
+- Run through `experiments/1_data_wrangling.ipynb` // TODO: need to automate this part
+- `python trainer/export.py` to generate the `X_train.npy, X_test.npy, y_train.npy, x_test.npy` numpy array binaries. This is a separate step
+  because it takes 3+ hours to turn the ~27 million non-fire data points into a 13GB `X_train.npy`
+- `python trainer/train.py` to generate the `lgbm_model.pickle`

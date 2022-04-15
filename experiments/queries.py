@@ -2,71 +2,11 @@ import numpy as np
 import pandas as pd
 import sqlite3
 
-dtype = {
-    'long': np.float32,
-    'lat': np.float32,
-    'month': np.int8,
-    'date': np.int64,
-    'precipitation': np.float32,
-    'pressure': np.float32,
-    'humidity_2m': np.float32,
-    'temp_2m': np.float32,
-    'temp_dew_point_2m': np.float32,
-    'temp_wet_bulb_2m': np.float32,
-    'temp_max_2m': np.float32,
-    'temp_min_2m': np.float32,
-    'temp_range_2m': np.float32,
-    'temp_0m': np.float32,
-    'wind_10m': np.float32,
-    'wind_max_10m': np.float32,
-    'wind_min_10m': np.float32,
-    'wind_range_10m': np.float32,
-    'wind_50m': np.float32,
-    'wind_max_50m': np.float32,
-    'wind_min_50m': np.float32,
-    'wind_range_50m': np.float32,
-    'drought_score': np.float32,
-    'elevation': np.int32,
-    'slope_005': np.float32,
-    'slope_005_02': np.float32,
-    'slope_02_05': np.float32,
-    'slope_05_10': np.float32,
-    'slope_10_15': np.float32,
-    'slope_15_30': np.float32,
-    'slope_30_45': np.float32,
-    'slope_45': np.float32,
-    'aspect_north': np.float32,
-    'aspect_east': np.float32,
-    'aspect_south': np.float32,
-    'aspect_west': np.float32,
-    'aspect_unknown': np.float32,
-    'water_land': np.float32,
-    'barren_land': np.float32,
-    'urban_land': np.float32,
-    'grass_land': np.float32,
-    'forest_land': np.float32,
-    'partial_cultivated_land': np.float32,
-    'irrigated_land': np.float32,
-    'cultivated_land': np.float32,
-    'nutrient': np.int8,
-    'nutrient_retention': np.int8,
-    'rooting': np.int8,
-    'oxygen': np.int8,
-    'excess_salts': np.int8,
-    'toxicity': np.int8,
-    'workablity': np.int8,
-    'prior_fire_0_1_year': np.int8,
-    'prior_fire_1_2_year': np.int8,
-    'prior_fire_2_3_year': np.int8,
-    'prior_fire_3_4_year': np.int8,
-    'prior_fire_4_5_year': np.int8
-}
 
-
-def get_df_no_fires(limit=100000):
+def get_no_fires_df(limit=100000):
     conn = sqlite3.connect('/Users/eerichmo/Documents/fires.sqlite')
 
-    df_no_fire = pd.read_sql_query(f"""
+    no_fires_df = pd.read_sql_query(f"""
   select
     weather_geo.long,
     weather_geo.lat,
@@ -130,17 +70,17 @@ def get_df_no_fires(limit=100000):
   inner join soil
     on soil.fips = weather_geo.fips
   {'' if limit is None else f'limit {limit}'}
-  """, conn, dtype=dtype)
+  """, conn)
 
     conn.close()
 
-    return df_no_fire
+    return no_fires_df
 
 
-def get_df_yes_fires():
+def get_fires_df():
     conn = sqlite3.connect('/Users/eerichmo/Documents/fires.sqlite')
 
-    df_yes_fire = pd.read_sql_query("""
+    fires_df = pd.read_sql_query("""
   select
     weather_geo.long,
     weather_geo.lat,
@@ -208,12 +148,12 @@ def get_df_yes_fires():
     and fires_rollup.long = weather_geo.long
     and fires_rollup.lat = weather_geo.lat
     and fires_rollup.cause in ('Other causes', 'Natural', 'Power', 'Recreation')
-  """, conn, dtype=dtype)
+  """, conn)
 
     conn.close()
 
-    return df_yes_fire
+    return fires_df
 
 
-def get_df_fires(limit=100000):
-    return pd.concat([get_df_no_fires(limit=limit), get_df_yes_fires()], axis=0).sample(frac=1)
+def get_df(limit=100000):
+    return pd.concat([get_no_fires_df(limit=limit), get_fires_df()], axis=0).sample(frac=1)
