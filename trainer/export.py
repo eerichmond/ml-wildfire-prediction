@@ -8,44 +8,53 @@ import sys
 
 import queries
 
-logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
-partition = 'train' if len(sys.argv) > 1 and sys.argv[1] == 'train' else 'test'
+def main():
+    logging.basicConfig(
+        format='%(levelname)s: %(message)s', level=logging.INFO)
 
-if partition == 'train':
-    min_date = None
-    max_date = '2018-01-01'
-else:
-    min_date = '2018-01-01'
-    max_date = None
+    partition = 'train' if len(
+        sys.argv) > 1 and sys.argv[1] == 'train' else 'test'
 
-no_fires_df = queries.get_no_fires_df(min_date, max_date)
-logging.info(f'Found {len(no_fires_df)} no fire {partition} data points')
+    if partition == 'train':
+        min_date = None
+        max_date = '2018-01-01'
+    else:
+        min_date = '2018-01-01'
+        max_date = None
 
-fires_df = queries.get_fires_df(min_date, max_date)
-logging.info(f'Found {len(fires_df)} fire {partition} data points')
+    no_fires_df = queries.get_no_fires_df(min_date, max_date)
+    logging.info(f'Found {len(no_fires_df)} no fire {partition} data points')
 
-df = pd.concat([no_fires_df, fires_df], axis=0).sample(frac=1)
+    fires_df = queries.get_fires_df(min_date, max_date)
+    logging.info(f'Found {len(fires_df)} fire {partition} data points')
 
-del no_fires_df, fires_df
-gc.collect()
+    df = pd.concat([no_fires_df, fires_df], axis=0).sample(frac=1)
 
-y = df.has_fire.to_numpy()
-save(f'./data/y_{partition}.npy', y)
+    del no_fires_df, fires_df
+    gc.collect()
 
-del y
-gc.collect()
+    y = df.has_fire.to_numpy()
+    save(f'./data/y_{partition}.npy', y)
 
-df_encoded = pd.get_dummies(df.drop(['has_fire'], axis=1), columns=['month'])
+    del y
+    gc.collect()
 
-del df
-gc.collect()
+    df_encoded = pd.get_dummies(
+        df.drop(['has_fire'], axis=1), columns=['month'])
 
-scaler = StandardScaler()
-scaler.fit(df_encoded)
-X = scaler.transform(df_encoded)
+    del df
+    gc.collect()
 
-del df_encoded
-gc.collect()
+    scaler = StandardScaler()
+    scaler.fit(df_encoded)
+    X = scaler.transform(df_encoded)
 
-save(f'./data/X_{partition}.npy', X)
+    del df_encoded
+    gc.collect()
+
+    save(f'./data/X_{partition}.npy', X)
+
+
+if __name__ == '__main__':
+    main()
