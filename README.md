@@ -21,6 +21,12 @@ One topic I am passionate about is the environment, especially the impact that c
 ### How to Train
 
 - Run through `experiments/1_data_wrangling.ipynb` // TODO: need to automate this part
-- `python trainer/export.py` to generate the `X_train.npy, X_test.npy, y_train.npy, x_test.npy` numpy array binaries. This is a separate step
-  because it takes 3+ hours to turn the ~27 million non-fire data points into a 13GB `X_train.npy`
-- `python trainer/train.py` to generate the `lgbm_model.pickle`
+- `python trainer/export.py test` to generate `X_test.npy, x_test.npy` and
+  `python trainer/export.py train` to generate `X_train.npy, y_train.npy, src/app/models/scalar.pickle` numpy
+  array binaries. These are a separate steps because it takes 3+ hours to turn the ~27 million
+  non-fire data points into a 13GB `X_train.npy`
+- `python trainer/train.py xgb` to generate the `src/app/models/xgb_model.pickle`
+
+### Testing the App
+
+- `ptw --runner "pytest --testmon ./src/app/" `

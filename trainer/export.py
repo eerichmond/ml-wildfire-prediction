@@ -1,12 +1,13 @@
 #!/usr/bin/python
 import gc
+import joblib
 import logging
 from numpy import save
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import sys
 
-import queries
+from queries import get_fires_df, get_no_fires_df
 
 
 def main():
@@ -23,10 +24,10 @@ def main():
         min_date = '2018-01-01'
         max_date = None
 
-    no_fires_df = queries.get_no_fires_df(min_date, max_date)
+    no_fires_df = get_no_fires_df(min_date, max_date)
     logging.info(f'Found {len(no_fires_df)} no fire {partition} data points')
 
-    fires_df = queries.get_fires_df(min_date, max_date)
+    fires_df = get_fires_df(min_date, max_date)
     logging.info(f'Found {len(fires_df)} fire {partition} data points')
 
     df = pd.concat([no_fires_df, fires_df], axis=0).sample(frac=1)
@@ -48,6 +49,10 @@ def main():
 
     scaler = StandardScaler()
     scaler.fit(df_encoded)
+
+    if partition == 'train':
+        joblib.dump(scaler, './src/app/models/scaler.pickle')
+
     X = scaler.transform(df_encoded)
 
     del df_encoded
