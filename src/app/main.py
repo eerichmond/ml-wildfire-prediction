@@ -25,7 +25,7 @@ scaler = load(scaler_file)
 
 @app.get("/")
 def home(*, request: Request, date: date = datetime.now() - timedelta(2), long: float = None, lat: float = None):
-    features = None
+    feature_json = None
     proba = 0.0
 
     if (date and long and lat):
