@@ -32,7 +32,7 @@ One topic I am passionate about is the environment, especially the impact that c
 - `pip install -r requirements.txt`
 - `yarn install`
 - `yarn build`
-- `uvicorn --reload app.main:app`
+- `uvicorn app.main:app --reload`
 
 ### Run Tests
 
