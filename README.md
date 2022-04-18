@@ -27,6 +27,13 @@ One topic I am passionate about is the environment, especially the impact that c
   non-fire data points into a 13GB `X_train.npy`
 - `python trainer/train.py xgb` to generate the `src/app/models/xgb_model.pickle`
 
-### Testing the App
+### Start App
 
-- `ptw --runner "pytest --testmon ./src/app/" `
+- `pip install -r requirements.txt`
+- `yarn install`
+- `yarn build`
+- `cd src/app && uvicorn --reload main:app`
+
+### Run Tests
+
+- `cd src/app && ptw --runner "pytest --testmon"`

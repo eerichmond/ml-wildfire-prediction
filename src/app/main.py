@@ -1,10 +1,12 @@
 from datetime import date, datetime, timedelta
 from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
 from joblib import load
 from json import dumps
 import numpy as np
 from os import path
 import pandas as pd
+from starlette.responses import FileResponse
 from starlette.templating import Jinja2Templates
 import warnings
 
@@ -13,7 +15,7 @@ from fetcher import get_drought_score, get_prior_fire_years, get_soil, get_weath
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 app = FastAPI()
-
+app.mount("/public", StaticFiles(directory="public"), name="public")
 views = Jinja2Templates(directory="views")
 
 model_file = path.join(path.dirname(__file__), './models/xgb_model.pickle')
@@ -70,3 +72,8 @@ def calculate_probablity(features: dict):
     _, yes_fire = xgb_model.predict_proba(values)[0]
 
     return round(yes_fire * 100, 2)
+
+
+@app.get('/favicon.ico')
+async def favicon():
+    return FileResponse('favicon.ico')
