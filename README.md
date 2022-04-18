@@ -32,8 +32,8 @@ One topic I am passionate about is the environment, especially the impact that c
 - `pip install -r requirements.txt`
 - `yarn install`
 - `yarn build`
-- `cd src/app && uvicorn --reload main:app`
+- `uvicorn --reload app.main:app`
 
 ### Run Tests
 
-- `cd src/app && ptw --runner "pytest --testmon"`
+- `ptw --runner "pytest --testmon"`

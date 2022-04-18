@@ -10,13 +10,13 @@ from starlette.responses import FileResponse
 from starlette.templating import Jinja2Templates
 import warnings
 
-from fetcher import get_drought_score, get_prior_fire_years, get_soil, get_weather
+from app.fetcher import get_drought_score, get_prior_fire_years, get_soil, get_weather
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 app = FastAPI()
-app.mount("/public", StaticFiles(directory="public"), name="public")
-views = Jinja2Templates(directory="views")
+app.mount("/public", StaticFiles(directory="app/public/"), name="public")
+views = Jinja2Templates(directory="app/views/")
 
 model_file = path.join(path.dirname(__file__), './models/xgb_model.pickle')
 xgb_model = load(model_file)
@@ -26,7 +26,7 @@ scaler = load(scaler_file)
 
 
 @app.get("/")
-def home(*, request: Request, date: date = datetime.now() - timedelta(2), long: float = None, lat: float = None):
+def home(*, request: Request, date: date = datetime.now() - timedelta(3), long: float = None, lat: float = None):
     feature_json = None
     proba = 0.0
 
@@ -76,4 +76,4 @@ def calculate_probablity(features: dict):
 
 @app.get('/favicon.ico')
 async def favicon():
-    return FileResponse('favicon.ico')
+    return FileResponse('app/favicon.ico')

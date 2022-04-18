@@ -8,9 +8,9 @@
   "private": false,
   "scripts": {
     "build": "tailwindcss --config tailwind.config.js --input src/app/index.css --output src/app/public/index.css --watch",
-    "uvicorn": "cd src/app && uvicorn main:app --reload",
+    "uvicorn": "uvicorn app.main:app --reload",
     "start": "concurrently \"yarn build\" \"yarn uvicorn\"",
-    "test": "cd src/app && ptw --runner \"pytest --testmon\""
+    "test": "ptw --runner \"pytest --testmon\" ./app/"
   },
   "dependencies": {},
   "devDependencies": {

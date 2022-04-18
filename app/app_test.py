@@ -1,7 +1,7 @@
 from datetime import date
 
-from main import features_api, calculate_probablity
-from fixtures.samples import features_2020_08_11
+from app.main import features_api, calculate_probablity
+from app.fixtures.samples import features_2020_08_11
 
 
 def test_features_api():

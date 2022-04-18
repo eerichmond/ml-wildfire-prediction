@@ -5,7 +5,7 @@ import requests
 from shapely.geometry import Point
 import urllib.parse
 
-soil_file = path.join(path.dirname(__file__), '../../data/soil.csv')
+soil_file = path.join(path.dirname(__file__), './models/soil.csv')
 soil_df = read_csv(soil_file).drop(
     ['aspect_unknown', 'cultivated_land', 'nutrient_retention'], axis=1
 )
