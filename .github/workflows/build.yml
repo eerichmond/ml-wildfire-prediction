@@ -17,7 +17,7 @@ jobs:
       id-token: write
       packages: write
     steps:
-      # - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       # - name: Python 3
       #   uses: actions/setup-python@v3
@@ -72,7 +72,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v0
         with:
           service: ml-wildfire
-          image: ghcr.io/eerichmond/ml-wildfire-prediction:latest
+          image: us-west1-docker.pkg.dev/strong-maker-345805/ml-wildfire/ml-wildfire:latest
           region: us-west1
 
       - name: URL
