@@ -41,9 +41,4 @@ setup() {
     --format="value(name)"
 }
 
-# setup
-
-
-gcloud iam service-accounts add-iam-policy-binding "ml-wildfire-service@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --project="${PROJECT_ID}" \
-  --role="roles/run.admin"
+setup

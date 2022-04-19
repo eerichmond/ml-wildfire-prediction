@@ -19,19 +19,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # - name: Python 3
-      #   uses: actions/setup-python@v3
-      #   with:
-      #     python-version: 3.9
-      #     cache: pip
+      - name: Python 3
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+          cache: pip
 
-      # - name: Install
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install -r app/requirements.txt
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r app/requirements.txt
 
-      # - name: Test
-      #   run: pytest
+      - name: Test
+        run: pytest
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -43,13 +43,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Docker build and push
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     push: true
-      #     tags: ghcr.io/eerichmond/ml-wildfire-prediction:latest
-      #     cache-from: type=registry,ref=eerichmond/ml-wildfire-prediction:latest
-      #     cache-to: type=inline
+      - name: Docker build and push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ghcr.io/eerichmond/ml-wildfire-prediction:latest
+          cache-from: type=registry,ref=eerichmond/ml-wildfire-prediction:latest
+          cache-to: type=inline
 
       - name: Google auth
         id: auth
@@ -58,12 +58,10 @@ jobs:
           workload_identity_provider: projects/644348144159/locations/global/workloadIdentityPools/eerichmond/providers/github
           service_account: ml-wildfire-service@strong-maker-345805.iam.gserviceaccount.com
 
-      - name: Build and push Docker
+      - name: Google Artifact Registry
         run: |
           gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
           gcloud auth configure-docker us-west1-docker.pkg.dev
-          # docker build -t us-west1-docker.pkg.dev/strong-maker-345805/ml-wildfire/ml-wildfire:latest .
-          docker pull ghcr.io/eerichmond/ml-wildfire-prediction:latest 
           docker tag ghcr.io/eerichmond/ml-wildfire-prediction:latest us-west1-docker.pkg.dev/strong-maker-345805/ml-wildfire/ml-wildfire:latest
           docker image push us-west1-docker.pkg.dev/strong-maker-345805/ml-wildfire/ml-wildfire:latest
 
