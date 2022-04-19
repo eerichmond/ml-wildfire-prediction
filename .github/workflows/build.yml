@@ -45,13 +45,14 @@ jobs:
           push: true
           tags: ghcr.io/eerichmond/ml-wildfire-prediction:latest
 
-      - id: Google auth
+      - name: Google auth
         uses: google-github-actions/auth@v0
         with:
           workload_identity_provider: projects/644348144159/locations/global/workloadIdentityPools/eerichmond/providers/github
           service_account: ml-wildfire-service@644348144159.iam.gserviceaccount.com
 
-      - id: Google Run deploy
+      - name: Google Run deploy
+        id: deploy
         uses: google-github-actions/deploy-cloudrun@v0
         with:
           service: ml-wildfire
