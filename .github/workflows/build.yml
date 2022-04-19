@@ -63,6 +63,7 @@ jobs:
         with:
           service: ml-wildfire
           image: ghcr.io/eerichmond/ml-wildfire-prediction:latest
+          region: us-west1
 
       - name: URL
         run: echo "${{ steps.deploy.outputs.url }}"
