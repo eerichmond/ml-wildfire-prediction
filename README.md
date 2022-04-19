@@ -1,5 +1,7 @@
 # Predicting United States Wildfires from Drought and Soil Conditions
 
+[![Build](https://github.com/eerichmond/ml-wildfire-prediction/actions/workflows/build.yml/badge.svg)](https://github.com/eerichmond/ml-wildfire-prediction/actions/workflows/build.yml)
+
 ### Deploying
 
 - GitHub Actions will deploy every commit to [Google Cloud Run](https://ml-wildfire-v2m4frgpla-uw.a.run.app/)
