@@ -4,11 +4,13 @@ export PROJECT_ID=strong-maker-345805
 export WORKLOAD_IDENTITY_POOL_ID=projects/644348144159/locations/global/workloadIdentityPools/eerichmond
 export REPO=eerichmond/ml-wildfire-prediction
 
+gcloud auth login
+
+gcloud config set project ${PROJECT_ID}
+
+gcloud config set run/region us-west1
+
 setup() {
-  gcloud auth login
-
-  gcloud config set project ${PROJECT_ID}
-
   gcloud iam service-accounts create "ml-wildfire-service" --project "${PROJECT_ID}"
 
   gcloud services enable iamcredentials.googleapis.com --project "${PROJECT_ID}"
@@ -40,4 +42,4 @@ setup() {
     --format="value(name)"
 }
 
-setup
+# setup

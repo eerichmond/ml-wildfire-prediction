@@ -54,8 +54,8 @@ jobs:
       - name: Google auth
         uses: google-github-actions/auth@v0
         with:
-          workload_identity_provider: projects/644348144159/locations/global/workloadIdentityPools/eerichmond/providers/github
-          service_account: ml-wildfire-service@644348144159.iam.gserviceaccount.com
+          workload_identity_provider: projects/strong-maker-345805/locations/global/workloadIdentityPools/eerichmond/providers/github
+          service_account: ml-wildfire-service@strong-maker-345805.iam.gserviceaccount.com
 
       - name: Google Run deploy
         id: deploy
