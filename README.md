@@ -1,6 +1,6 @@
 # Predicting United States Wildfires from Drought and Soil Conditions
 
-[![Build](https://github.com/eerichmond/ml-wildfire-prediction/actions/workflows/build.yml/badge.svg)](https://github.com/eerichmond/ml-wildfire-prediction/actions/workflows/build.yml)
+[![Build](https://github.com/eerichmond/ml-wildfire-prediction/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/eerichmond/ml-wildfire-prediction/actions/workflows/build.yml)
 
 ### Deploying
 
