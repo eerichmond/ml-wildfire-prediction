@@ -20,26 +20,44 @@ jobs:
       packages: write
       statuses: write
     steps:
+      - name: Cancel runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+          ignore_sha: true
+
       - uses: actions/checkout@v2
 
+      - name: Check cache
+        id: files
+        uses: actions/cache@v2
+        with:
+          path: app/requirements.txt
+          key: app-${{ hashFiles('app/**', 'Dockerfile') }}
+
       - name: Python 3
+        if: steps.files.outputs.cache-hit != 'true'
         uses: actions/setup-python@v3
         with:
           python-version: 3.9
           cache: pip
 
       - name: Install
+        if: steps.files.outputs.cache-hit != 'true'
         run: |
           python -m pip install --upgrade pip
           pip install -r app/requirements.txt
 
       - name: Test
+        if: steps.files.outputs.cache-hit != 'true'
         run: pytest
 
       - name: Set up Docker Buildx
+        if: steps.files.outputs.cache-hit != 'true'
         uses: docker/setup-buildx-action@v1
 
       - name: Docker login
+        if: steps.files.outputs.cache-hit != 'true'
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
@@ -47,6 +65,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Docker build and push
+        if: steps.files.outputs.cache-hit != 'true'
         uses: docker/build-push-action@v2
         with:
           push: true
@@ -55,6 +74,7 @@ jobs:
           cache-to: type=inline
 
       - name: Google auth
+        if: steps.files.outputs.cache-hit != 'true'
         id: auth
         uses: google-github-actions/auth@v0
         with:
@@ -62,6 +82,7 @@ jobs:
           service_account: ml-wildfire-service@strong-maker-345805.iam.gserviceaccount.com
 
       - name: Google Artifact Registry
+        if: steps.files.outputs.cache-hit != 'true'
         run: |
           gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
           gcloud auth configure-docker us-west1-docker.pkg.dev
@@ -70,6 +91,7 @@ jobs:
           docker image push us-west1-docker.pkg.dev/strong-maker-345805/ml-wildfire/ml-wildfire:latest
 
       - name: Google Run deploy
+        if: steps.files.outputs.cache-hit != 'true'
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v0
         with:
@@ -78,4 +100,5 @@ jobs:
           region: us-west1
 
       - name: URL
+        if: steps.files.outputs.cache-hit != 'true'
         run: echo "${{ steps.deploy.outputs.url }}"
