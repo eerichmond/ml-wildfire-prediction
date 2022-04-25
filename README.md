@@ -1,4 +1,4 @@
-# Predicting United States Wildfires from Drought and Soil Conditions
+# Predict California Wildfires from Weather and Soil Conditions
 
 [![Build](https://github.com/eerichmond/ml-wildfire-prediction/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/eerichmond/ml-wildfire-prediction/actions/workflows/build.yml)
 
