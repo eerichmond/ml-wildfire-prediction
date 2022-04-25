@@ -2,9 +2,9 @@
 
 [![Build](https://github.com/eerichmond/ml-wildfire-prediction/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/eerichmond/ml-wildfire-prediction/actions/workflows/build.yml)
 
-### Deploying
+### Demo
 
-- GitHub Actions will deploy every commit to [Google Cloud Run](https://ml-wildfire-v2m4frgpla-uw.a.run.app/)
+- [Google Cloud Run at https://ml-wildfire-v2m4frgpla-uw.a.run.app/](https://ml-wildfire-v2m4frgpla-uw.a.run.app/)
 
 ### How to Train
 
