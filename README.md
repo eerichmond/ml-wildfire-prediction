@@ -4,7 +4,7 @@
 
 ### Demo
 
-- [Google Cloud Run at https://ml-wildfire-v2m4frgpla-uw.a.run.app/](https://ml-wildfire-v2m4frgpla-uw.a.run.app/)
+- Google Cloud Run at https://ml-wildfire-v2m4frgpla-uw.a.run.app/
 
 ### How to Train
 
