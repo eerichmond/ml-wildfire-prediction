@@ -37,6 +37,7 @@ One topic I am passionate about is the environment, especially the impact that c
   - Install and test the Python app
   - Build Docker image and store in both GitHub Container Registry and Google Artifact Registry (Docker)
   - Deploy the `:latest` Docker image to Google Cloud Run
+- [Deployment Diagrams](https://docs.google.com/document/d/1XApYnanNj7glBL0Cuacg09lvcSD3Uhkhly44ez15XmU/edit?usp=sharing)
 
 ### [Capstone Project Proposal Google Doc](https://docs.google.com/document/d/1jK7I5DkK1wicWTT9E59OClmK7noie6oWeQ8o-KBUqVo/edit#)
 

@@ -57,6 +57,12 @@ def features_api(date: date, long: float, lat: float):
     return {**weather, 'drought_score': drought_score, **soil, **prior_fire_years}
 
 
+@app.get("/probablity")
+def probablity_api(date: date, long: float, lat: float) -> int:
+    features = features_api(date, long, lat)
+    return calculate_probablity(features)
+
+
 def calculate_probablity(features: dict):
     df = pd.DataFrame(
         {**features, 'date': int(features['date'].strftime('%s'))}, index=[0]
