@@ -37,16 +37,16 @@ One topic I am passionate about is the environment, especially the impact that c
   geolocated weather points into a 13GB `X_train.npy`
 - `python trainer/train.py xgb` to generate the `src/app/models/xgb_model.pickle`
 
-### Deploying to Google Cloud Run
+### Setting up Google Cloud Run
 
+- [Deployment Diagrams](https://docs.google.com/document/d/1XApYnanNj7glBL0Cuacg09lvcSD3Uhkhly44ez15XmU/edit?usp=sharing)
 - [Google Cloud Dashboard](https://console.cloud.google.com/home/dashboard)
-- Create a `ml-wildfire` Google Cloud Run service and Google Artifact Registry
-  - `sh ./gcp_setup.sh`
+  - Replace the Project ID (`strong-maker-345805`) and Account Number (`644348144159`) in `gcp_setup.sh` and `build.yml`
+- Run `sh ./gcp_setup.sh` to create the `ml-wildfire` Google Cloud Run service and Google Artifact Registry (onetime)
 - GitHub Actions `build.yml` will
   - Install and test the Python app
   - Build and push the Docker image to GitHub Container Registry and Google Artifact Registry
   - Deploy the `:latest` Docker image to Google Cloud Run
-- [Deployment Diagrams](https://docs.google.com/document/d/1XApYnanNj7glBL0Cuacg09lvcSD3Uhkhly44ez15XmU/edit?usp=sharing)
 
 ### [Capstone Project Proposal Google Doc](https://docs.google.com/document/d/1jK7I5DkK1wicWTT9E59OClmK7noie6oWeQ8o-KBUqVo/edit#)
 
