@@ -3,7 +3,7 @@ import sqlite3
 
 
 def get_no_fires_df(limit=100000):
-    conn = sqlite3.connect('../fires.sqlite')
+    conn = sqlite3.connect('../data/fires.sqlite')
 
     no_fires_df = pd.read_sql_query(f"""
   select
@@ -77,7 +77,7 @@ def get_no_fires_df(limit=100000):
 
 
 def get_fires_df():
-    conn = sqlite3.connect('../fires.sqlite')
+    conn = sqlite3.connect('../data/fires.sqlite')
 
     fires_df = pd.read_sql_query("""
   select

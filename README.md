@@ -27,9 +27,9 @@ One topic I am passionate about is the environment, especially the impact that c
 - Watch tests `ptw --runner "pytest --testmon"`
 - Generate coverage badge `coverage-badge -f -o coverage.svg`
 
-### How to Train
+### Run Notebooks and Train
 
-- Download [fires.sqlite from Google Cloud Storage](https://storage.googleapis.com/eer-wildfires/fires.sqlite) (19GB)
+- Download [fires.sqlite from Google Cloud Storage](https://storage.googleapis.com/eer-wildfires/fires.sqlite) (19GB) to `./data/fires.sqlite`
 - Run through `experiments/1_data_wrangling.ipynb` // TODO: need to automate this part
 - `python app/trainer/export.py test` to generate `X_test.npy, x_test.npy` and
   `python app/trainer/export.py train` to generate `X_train.npy, y_train.npy, src/app/models/scalar.pickle` numpy

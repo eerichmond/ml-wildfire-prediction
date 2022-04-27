@@ -7,12 +7,9 @@ import xgboost
 import sys
 
 
-def main():
+def main(classifier: str, data_dir: str, model_dir: str):
     logging.basicConfig(
         format='%(levelname)s: %(message)s', level=logging.INFO)
-
-    classifier = 'xgb' if len(
-        sys.argv) > 1 and sys.argv[1] == 'xgb' else 'lgbm'
 
     scale_pos_weight = round(28404454/92659)
 
@@ -45,17 +42,19 @@ def main():
         )
 
     logging.info('Loading y_train ...')
-    y_train = load('./data/y_train.npy')
+    y_train = load(f'{data_dir}y_train.npy')
 
     logging.info('Loading X_train ...')
-    X_train = load('./data/X_train.npy')
+    X_train = load(f'{data_dir}X_train.npy')
 
     logging.info(f'Training {classifier} ...')
     model.fit(X_train, y_train)
 
     logging.info('Saving model ...')
-    joblib.dump(model, f'./app/models/{classifier}_model.pickle')
+    joblib.dump(model, f'{model_dir}{classifier}_model.pickle')
 
 
 if __name__ == '__main__':
-    main()
+    classifier = 'lgbm' if len(
+        sys.argv) > 1 and sys.argv[1] == 'lgbm' else 'xgb'
+    main(classifier, data_dir='./data/', model_dir='./app/models/')

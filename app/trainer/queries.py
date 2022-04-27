@@ -50,8 +50,8 @@ dtype = {
 }
 
 
-def get_no_fires_df(min_date, max_date):
-    conn = sqlite3.connect('./fires.sqlite')
+def get_no_fires_df(min_date, max_date, sqlite_file):
+    conn = sqlite3.connect(sqlite_file)
 
     no_fires_df = pd.read_sql_query(f"""
   select
@@ -113,8 +113,8 @@ def get_no_fires_df(min_date, max_date):
     return no_fires_df
 
 
-def get_fires_df(min_date, max_date):
-    conn = sqlite3.connect('./fires.sqlite')
+def get_fires_df(min_date, max_date, sqlite_file):
+    conn = sqlite3.connect(sqlite_file)
 
     fires_df = pd.read_sql_query(f"""
   select
