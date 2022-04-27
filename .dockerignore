@@ -6,6 +6,7 @@ data/
 experiments/
 trainer/
 .dockerignore
+*.config.js
 *.ini
 *.ipynb
 *.md
