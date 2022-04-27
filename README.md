@@ -8,6 +8,7 @@ One topic I am passionate about is the environment, especially the impact that c
 ### Demo
 
 - Google Cloud Run at https://ml-wildfire-v2m4frgpla-uw.a.run.app/
+- [API Docs](https://ml-wildfire-v2m4frgpla-uw.a.run.app/docs)
 
 ### Getting Started
 
