@@ -51,7 +51,7 @@ def main():
     scaler.fit(df_encoded)
 
     if partition == 'train':
-        joblib.dump(scaler, './src/app/models/scaler.pickle')
+        joblib.dump(scaler, './app/models/scaler.pickle')
 
     X = scaler.transform(df_encoded)
 

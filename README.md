@@ -23,19 +23,19 @@ One topic I am passionate about is the environment, especially the impact that c
 
 ### Run Tests
 
-- `pytest -v`
+- `coverage run --source=./app/ -m pytest -v && coverage report`
 - Watch tests `ptw --runner "pytest --testmon"`
-- Generate coverage badge `coverage run --source=./app/ -m pytest -v && coverage-badge -f -o coverage.svg`
+- Generate coverage badge `coverage-badge -f -o coverage.svg`
 
 ### How to Train
 
 - Download [fires.sqlite from Google Cloud Storage](https://storage.googleapis.com/eer-wildfires/fires.sqlite) (19GB)
 - Run through `experiments/1_data_wrangling.ipynb` // TODO: need to automate this part
-- `python trainer/export.py test` to generate `X_test.npy, x_test.npy` and
-  `python trainer/export.py train` to generate `X_train.npy, y_train.npy, src/app/models/scalar.pickle` numpy
+- `python app/trainer/export.py test` to generate `X_test.npy, x_test.npy` and
+  `python app/trainer/export.py train` to generate `X_train.npy, y_train.npy, src/app/models/scalar.pickle` numpy
   array binaries. These are a separate steps because it takes 3+ hours to turn the ~27 million
   geolocated weather points into a 13GB `X_train.npy`
-- `python trainer/train.py xgb` to generate the `src/app/models/xgb_model.pickle`
+- `python app/trainer/train.py xgb` to generate the `app/models/xgb_model.pickle`
 
 ### Google Cloud Run Setup
 

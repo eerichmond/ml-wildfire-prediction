@@ -54,7 +54,7 @@ def main():
     model.fit(X_train, y_train)
 
     logging.info('Saving model ...')
-    joblib.dump(model, f'../src/app/models/{classifier}_model.pickle')
+    joblib.dump(model, f'./app/models/{classifier}_model.pickle')
 
 
 if __name__ == '__main__':

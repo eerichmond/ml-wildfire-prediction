@@ -3,5 +3,6 @@ __pycache__/
 .vscode/
 node_modules/
 .coverage
-*.npy
 .testmondata
+fires.sqlite
+*.npy
