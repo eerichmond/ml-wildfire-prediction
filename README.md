@@ -8,6 +8,7 @@
 
 ### How to Train
 
+- [fires.sqlite on Google Cloud Storage](https://storage.googleapis.com/eer-wildfires/fires.sqlite)
 - Run through `experiments/1_data_wrangling.ipynb` // TODO: need to automate this part
 - `python trainer/export.py test` to generate `X_test.npy, x_test.npy` and
   `python trainer/export.py train` to generate `X_train.npy, y_train.npy, src/app/models/scalar.pickle` numpy
