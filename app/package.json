@@ -7,10 +7,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "tailwindcss --config tailwind.config.js --input src/app/index.css --output src/app/public/index.css --watch",
-    "uvicorn": "uvicorn app.main:app --reload",
-    "start": "concurrently \"yarn build\" \"yarn uvicorn\"",
-    "test": "ptw --runner \"pytest --testmon\" ./app/"
+    "build": "yarn install && tailwindcss --config tailwind.config.js --input ./index.css --output ./public/index.css"
   },
   "dependencies": {},
   "devDependencies": {

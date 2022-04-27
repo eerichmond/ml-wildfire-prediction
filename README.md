@@ -12,6 +12,7 @@
 - [Install Anaconda](https://docs.anaconda.com/anaconda/install/)
 - `conda create -name ml-wildfire python=3.8`
 - `pip install -r requirements.txt`
+- `yarn --cwd ./app/ build`
 
 ### How to Train
 
@@ -23,18 +24,15 @@
   geolocated weather points into a 13GB `X_train.npy`
 - `python trainer/train.py xgb` to generate the `src/app/models/xgb_model.pickle`
 
-### Start App
+### Run Locally
 
-- `pip install -r requirements.txt`
-- `yarn install`
-- `yarn build`
 - `uvicorn app.main:app --reload`
 
 ### Run Tests
 
 - `pytest -v`
-- Watch `ptw --runner "pytest --testmon"`
-- Generage coverage badge `coverage run --source=./app/ -m pytest -v && coverage-badge -f -o coverage.svg`
+- Watch tests `ptw --runner "pytest --testmon"`
+- Generate coverage badge `coverage run --source=./app/ -m pytest -v && coverage-badge -f -o coverage.svg`
 
 One topic I am passionate about is the environment, especially the impact that climate change has on our natural world and standard of living. To get an idea of what kind of climate related datasets were out there, I scrubbed [Kaggle.com](Kaggle.com) for high quality datasets that involved the environment. A couple datasets caught my attention because they were so close to home. The two datasets were [United States wildfires over a 24 year period](https://www.kaggle.com/datasets/rtatman/188-million-us-wildfires) and [United States droughts and soil conditions over a 20 year period](https://www.kaggle.com/datasets/cdminix/us-drought-meteorological-data). I live in the central valley of California (US) where every year the fires in the hills on either side of the valley become worse and worse, creating horrible air quality and destroying the forests. I am interested in predicting when and where wildfires will occur next. Identifying these locations could lead to better fire preparation and population planning.
 
