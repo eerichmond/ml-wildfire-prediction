@@ -35,11 +35,11 @@ jobs:
           path: app/requirements.txt
           key: app-${{ hashFiles('app/**', 'Dockerfile') }}
 
-      - name: Python 3
+      - name: Python 3.8
         if: steps.files.outputs.cache-hit != 'true'
         uses: actions/setup-python@v3
         with:
-          python-version: 3.9
+          python-version: 3.8
           cache: pip
 
       - name: Install
@@ -50,7 +50,9 @@ jobs:
 
       - name: Test
         if: steps.files.outputs.cache-hit != 'true'
-        run: pytest
+        run: |
+          coverage run --source=./app/ -m pytest -v
+          coverage report --fail-under=60
 
       - name: Set up Docker Buildx
         if: steps.files.outputs.cache-hit != 'true'
