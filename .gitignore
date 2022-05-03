@@ -2,8 +2,10 @@ __pycache__/
 .pytest_cache/
 .vscode/
 data/fires.sqlite
+data/soil.mdb
 fixtures/tmp/
 node_modules/
 .coverage
+.DS_Store
 .testmondata
 *.npy

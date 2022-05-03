@@ -45,11 +45,12 @@ def main(partition: str, data_dir: str, model_dir: str, sqlite_file: str):
     del df
     gc.collect()
 
-    scaler = StandardScaler()
-    scaler.fit(df_encoded)
-
     if partition == 'train':
+        scaler = StandardScaler()
+        scaler.fit(df_encoded)
         joblib.dump(scaler, f'{model_dir}scaler.pickle')
+    else:
+        scaler = joblib.load(f'{model_dir}scaler.pickle')
 
     X = scaler.transform(df_encoded)
 
