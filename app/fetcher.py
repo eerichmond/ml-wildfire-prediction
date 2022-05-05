@@ -6,11 +6,7 @@ from shapely.geometry import Point
 import urllib.parse
 
 soil_file = path.join(path.dirname(__file__), './models/soil.csv')
-soil_df = read_csv(soil_file).drop(
-    ['aspect_unknown', 'cultivated_land', 'nutrient_retention'], axis=1
-)
-soil_df = soil_df[(soil_df.fips >= 6000) & (soil_df.fips < 7000)]
-soil_pt_1 = Point(soil_df.iloc[0].longitude, soil_df.iloc[0].latitude)
+soil_df = read_csv(soil_file, index_col=['long', 'lat'])
 
 
 def get_weather(date: date, long: float, lat: float):
@@ -70,21 +66,12 @@ def get_drought_score(date: date, fips: int):
         item['D2'])/100 + float(item['D3'])/100 + float(item['D4'])/100
 
 
-def get_soil(long: int, lat: int):
-    pt = Point(long, lat)
-    nearest_soil_dist = soil_pt_1.distance(pt)
-    soil = {}
-
-    for _, soil_row in soil_df.iterrows():
-        soil_pt = Point(soil_row.longitude, soil_row.latitude)
-
-        if soil_pt.distance(pt) < nearest_soil_dist:
-            nearest_soil_dist = soil_pt.distance(pt)
-            soil = soil_row.to_dict()
+def get_soil(long: float, lat: float):
+    soil = soil_df.loc[(round(long, 1), round(lat, 1))]
 
     soil['fips'] = int(soil['fips'])
-    del soil['longitude']
-    del soil['latitude']
+    del soil['long']
+    del soil['lat']
 
     return soil
 

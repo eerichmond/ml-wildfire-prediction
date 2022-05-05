@@ -2,7 +2,7 @@ __pycache__/
 .pytest_cache/
 .vscode/
 data/fires.sqlite
-data/soil.mdb
+data/soil/
 fixtures/tmp/
 node_modules/
 .coverage

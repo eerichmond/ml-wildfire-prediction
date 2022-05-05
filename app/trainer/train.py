@@ -18,26 +18,29 @@ def main(classifier: str, data_dir: str, model_dir: str):
             seed=42,
             use_label_encoder=False,
             objective='binary:logistic',
-            n_estimators=500,
+            n_estimators=1000,
             max_depth=9,
             learning_rate=0.1,
-            gamma=0.2,
+            gamma=0.3,
             eval_metric='error',
-            colsample_bytree=0.2,
+            colsample_bytree=0.4,
             scale_pos_weight=scale_pos_weight
         )
     else:
         model = lgbm.LGBMClassifier(
             objective='binary',
-            num_leaves=100,
-            min_data_in_leaf=200,
+            num_leaves=20,
+            min_gain_to_split=7,
+            min_data_in_leaf=1000,
             metric='binary_logloss',
-            max_depth=7,
+            max_depth=3,
             max_bin=300,
+            lambda_l2=50,
+            lambda_l1=10,
             learning_rate=0.2,
             feature_fraction=0.5,
-            bagging_freq=5,
-            bagging_fraction=0.7,
+            bagging_freq=1,
+            bagging_fraction=0.4,
             scale_pos_weight=scale_pos_weight
         )
 

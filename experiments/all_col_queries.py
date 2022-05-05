@@ -2,7 +2,7 @@ import pandas as pd
 import sqlite3
 
 
-def get_no_fires_df(limit=100000):
+def get_no_fires_df():
     conn = sqlite3.connect('../data/fires.sqlite')
 
     no_fires_df = pd.read_sql_query(f"""
@@ -43,7 +43,6 @@ def get_no_fires_df(limit=100000):
     soil.aspect_east,
     soil.aspect_south,
     soil.aspect_west,
-    soil.aspect_unknown,
     soil.water_land,
     soil.barren_land,
     soil.urban_land,
@@ -53,22 +52,21 @@ def get_no_fires_df(limit=100000):
     soil.irrigated_land,
     soil.cultivated_land,
     soil.nutrient,
-    soil.nutrient_retention,
     soil.rooting,
     soil.oxygen,
     soil.excess_salts,
     soil.toxicity,
-    soil.workablity,
+    soil.workability,
     prior_fire_0_1_year,
     prior_fire_1_2_year,
     prior_fire_2_3_year,
     prior_fire_3_4_year,
     prior_fire_4_5_year,
     '' as fire_size_class
-  from weather_geo_no_fire as weather_geo
-  inner join soil
-    on soil.fips = weather_geo.fips
-  {'' if limit is None else f'limit {limit}'}
+  from weather_geo_no_fire_100k as weather_geo
+  inner join soil_geo as soil
+    on soil.long = weather_geo.long
+    and soil.lat = weather_geo.lat
   """, conn)
 
     conn.close()
@@ -117,7 +115,6 @@ def get_fires_df():
     soil.aspect_east,
     soil.aspect_south,
     soil.aspect_west,
-    soil.aspect_unknown,
     soil.water_land,
     soil.barren_land,
     soil.urban_land,
@@ -127,12 +124,11 @@ def get_fires_df():
     soil.irrigated_land,
     soil.cultivated_land,
     soil.nutrient,
-    soil.nutrient_retention,
     soil.rooting,
     soil.oxygen,
     soil.excess_salts,
     soil.toxicity,
-    soil.workablity,
+    soil.workability,
     fires_rollup.prior_fire_0_1_year,
     fires_rollup.prior_fire_1_2_year,
     fires_rollup.prior_fire_2_3_year,
@@ -140,8 +136,9 @@ def get_fires_df():
     fires_rollup.prior_fire_4_5_year,
     fires_rollup.fire_size_class
   from weather_geo
-  inner join soil
-    on soil.fips = weather_geo.fips
+  inner join soil_geo as soil
+    on soil.long = weather_geo.long
+    and soil.lat = weather_geo.lat
   inner join fires_rollup
     on fires_rollup.date = weather_geo.date
     and fires_rollup.long = weather_geo.long
@@ -154,5 +151,5 @@ def get_fires_df():
     return fires_df
 
 
-def get_df(limit=100000):
-    return pd.concat([get_no_fires_df(limit=limit), get_fires_df()], axis=0).sample(frac=1)
+def get_df():
+    return pd.concat([get_no_fires_df(), get_fires_df()], axis=0).sample(frac=1)

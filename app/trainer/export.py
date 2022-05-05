@@ -39,7 +39,7 @@ def main(partition: str, data_dir: str, model_dir: str, sqlite_file: str):
     gc.collect()
 
     df_encoded = pd.get_dummies(
-        df.drop(['has_fire'], axis=1), columns=['month', 'nutrient', 'rooting', 'oxygen', 'excess_salts', 'toxicity', 'workablity']
+        df.drop(['has_fire'], axis=1), columns=['month', 'nutrient', 'rooting', 'oxygen', 'excess_salts', 'toxicity', 'workability']
     )
 
     del df

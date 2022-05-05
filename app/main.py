@@ -15,8 +15,8 @@ from app.fetcher import get_drought_score, get_prior_fire_years, get_soil, get_w
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 app = FastAPI()
-app.mount("/public", StaticFiles(directory="app/public/"), name="public")
-views = Jinja2Templates(directory="app/views/")
+app.mount('/public', StaticFiles(directory='app/public/'), name='public')
+views = Jinja2Templates(directory='app/views/')
 
 model_file = path.join(path.dirname(__file__), './models/xgb_model.pickle')
 xgb_model = load(model_file)
@@ -25,7 +25,7 @@ scaler_file = path.join(path.dirname(__file__), './models/scaler.pickle')
 scaler = load(scaler_file)
 
 
-@app.get("/")
+@app.get('/')
 def home(*, request: Request, date: date = datetime.now() - timedelta(3), long: float = None, lat: float = None):
     feature_json = None
     proba = 0.0
@@ -39,14 +39,14 @@ def home(*, request: Request, date: date = datetime.now() - timedelta(3), long: 
         )
 
     return views.TemplateResponse(
-        "home.html",
+        'home.html',
         {
-            "date": date, "long": long, "lat": lat, "features": feature_json, "proba": proba, "request": request
+            'date': date, 'long': long, 'lat': lat, 'features': feature_json, 'proba': proba, 'request': request
         }
     )
 
 
-@app.get("/features")
+@app.get('/features')
 def features_api(date: date, long: float, lat: float):
     weather = get_weather(date, long, lat)
     soil = get_soil(long, lat)
@@ -57,7 +57,7 @@ def features_api(date: date, long: float, lat: float):
     return {**weather, 'drought_score': drought_score, **soil, **prior_fire_years}
 
 
-@app.get("/probablity")
+@app.get('/probablity')
 def probablity_api(date: date, long: float, lat: float) -> int:
     features = features_api(date, long, lat)
     return calculate_probablity(features)
