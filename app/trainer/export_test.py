@@ -20,7 +20,7 @@ def run_around_tests():
 def test_export_test_npy():
     export('test', data_dir=tmp_dir, model_dir=tmp_dir, sqlite_file=sqlite)
 
-    assert not path.exists(path.join(tmp_dir, 'scaler.pickle'))
+    assert path.exists(path.join(tmp_dir, 'scaler.pickle'))
     assert path.exists(path.join(tmp_dir, 'y_test.npy'))
     assert path.exists(path.join(tmp_dir, 'X_test.npy'))
 

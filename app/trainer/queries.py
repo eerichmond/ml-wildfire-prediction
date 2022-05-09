@@ -181,3 +181,34 @@ def get_fires_df(min_date, max_date, sqlite_file):
     conn.close()
 
     return fires_df
+
+
+def one_hot_encode(orig_df):
+    df = orig_df.copy()
+
+    for i in range(12):
+        df[f'month_{i+1}'] = (df['month'] == i+1).astype(int)
+
+    for i in [0, 1, 2, 3, 4, 7]:
+        df[f'nutrient_{i}'] = (df['nutrient'] == i).astype(int)
+
+    for i in [0, 1, 2, 3, 4, 5, 7]:
+        df[f'rooting_{i}'] = (df['rooting'] == i).astype(int)
+
+    for i in [0, 1, 2, 3, 7]:
+        df[f'oxygen_{i}'] = (df['oxygen'] == i).astype(int)
+
+    for i in [0, 1, 2, 3, 4, 5, 7]:
+        df[f'excess_salts_{i}'] = (df['excess_salts'] == i).astype(int)
+
+    for i in [0, 1, 2, 3, 7]:
+        df[f'toxicity_{i}'] = (df['toxicity'] == i).astype(int)
+
+    for i in [0, 1, 2, 3, 4, 5, 7]:
+        df[f'workability_{i}'] = (df['workability'] == i).astype(int)
+
+    return df.drop(
+        ['month', 'nutrient', 'rooting', 'oxygen',
+         'excess_salts', 'toxicity', 'workability'],
+        axis=1
+    )

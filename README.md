@@ -35,7 +35,7 @@ One topic I am passionate about is the environment, especially the impact that c
   and `python -m app.trainer.export test` to generate `X_test.npy, x_test.npy`
   array binaries. These are a separate steps because it takes 3+ hours to turn the ~27 million
   geolocated weather points into a 13GB `X_train.npy`
-- `python -m app.trainer.train.py xgb` to generate the `app/models/xgb_model.pickle`
+- `python -m app.trainer.train xgb` to generate the `app/models/xgb_model.pickle`
 
 ### Google Cloud Run Setup (onetime)
 

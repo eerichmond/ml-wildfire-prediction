@@ -17,4 +17,4 @@ def test_features_api():
 def test_calculate_probablity():
     proba = calculate_probablity(features_2020_08_11)
 
-    assert proba > 20.0
+    assert proba > 1

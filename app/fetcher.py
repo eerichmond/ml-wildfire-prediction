@@ -6,7 +6,9 @@ from shapely.geometry import Point
 import urllib.parse
 
 soil_file = path.join(path.dirname(__file__), './models/soil.csv')
-soil_df = read_csv(soil_file, index_col=['long', 'lat'])
+soil_df = read_csv(soil_file, index_col=['long', 'lat']).drop(
+    ['cultivated_land'], axis=1
+)
 
 
 def get_weather(date: date, long: float, lat: float):
@@ -67,11 +69,11 @@ def get_drought_score(date: date, fips: int):
 
 
 def get_soil(long: float, lat: float):
-    soil = soil_df.loc[(round(long, 1), round(lat, 1))]
+    soil = soil_df.loc[(round(long, 1), round(lat, 1))].to_dict()
 
     soil['fips'] = int(soil['fips'])
-    del soil['long']
-    del soil['lat']
+
+    print(soil)
 
     return soil
 

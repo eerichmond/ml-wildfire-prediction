@@ -11,6 +11,7 @@ from starlette.templating import Jinja2Templates
 import warnings
 
 from app.fetcher import get_drought_score, get_prior_fire_years, get_soil, get_weather
+from app.trainer.queries import one_hot_encode
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
@@ -68,10 +69,7 @@ def calculate_probablity(features: dict):
         {**features, 'date': int(features['date'].strftime('%s'))}, index=[0]
     )
 
-    for month in range(12):
-        df[f'month_{month+1}'] = int(df['month'] == month+1)
-
-    df = df.drop(['month'], axis=1)
+    df = one_hot_encode(df)
 
     values = scaler.transform(df)
 

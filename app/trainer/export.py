@@ -1,13 +1,14 @@
 #!/usr/bin/python
 import gc
-import joblib
+from joblib import dump, load
 import logging
 from numpy import save
+from os import path
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
-import sys
+from sys import argv
 
-from app.trainer.queries import get_fires_df, get_no_fires_df
+from app.trainer.queries import get_fires_df, get_no_fires_df, one_hot_encode
 
 
 def main(partition: str, data_dir: str, model_dir: str, sqlite_file: str):
@@ -38,19 +39,17 @@ def main(partition: str, data_dir: str, model_dir: str, sqlite_file: str):
     del y
     gc.collect()
 
-    df_encoded = pd.get_dummies(
-        df.drop(['has_fire'], axis=1), columns=['month', 'nutrient', 'rooting', 'oxygen', 'excess_salts', 'toxicity', 'workability']
-    )
+    df_encoded = one_hot_encode(df.drop(['has_fire'], axis=1))
 
     del df
     gc.collect()
 
-    if partition == 'train':
+    if path.exists(f'{model_dir}scaler.pickle'):
+        scaler = load(f'{model_dir}scaler.pickle')
+    else:
         scaler = StandardScaler()
         scaler.fit(df_encoded)
-        joblib.dump(scaler, f'{model_dir}scaler.pickle')
-    else:
-        scaler = joblib.load(f'{model_dir}scaler.pickle')
+        dump(scaler, f'{model_dir}scaler.pickle')
 
     X = scaler.transform(df_encoded)
 
@@ -61,8 +60,7 @@ def main(partition: str, data_dir: str, model_dir: str, sqlite_file: str):
 
 
 if __name__ == '__main__':
-    partition = 'train' if len(
-        sys.argv) > 1 and sys.argv[1] == 'train' else 'test'
+    partition = 'train' if len(argv) > 1 and argv[1] == 'train' else 'test'
     main(
         partition, data_dir='./data/', model_dir='./app/models/',
         sqlite_file='./data/fires.sqlite'
