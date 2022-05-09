@@ -73,8 +73,6 @@ def get_soil(long: float, lat: float):
 
     soil['fips'] = int(soil['fips'])
 
-    print(soil)
-
     return soil
 
 
