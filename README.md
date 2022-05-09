@@ -50,7 +50,7 @@ One topic I am passionate about is the environment, especially the impact that c
 
 [Deployment Diagrams](https://docs.google.com/document/d/1XApYnanNj7glBL0Cuacg09lvcSD3Uhkhly44ez15XmU/edit?usp=sharing)
 
-On every git push, GitHub Actions `build.yml` will:
+On every git push, GitHub Actions [build.yml](https://github.com/eerichmond/ml-wildfire-prediction/actions/workflows/build.yml) will:
 
 - Install and test the Python app
 - Build and push the Docker image to GitHub Container Registry and Google Artifact Registry
