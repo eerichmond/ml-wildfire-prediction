@@ -21,8 +21,8 @@ def run_around_tests():
 
 
 def test_train_xgb():
-    export('test', data_dir=tmp_dir, model_dir=tmp_dir, sqlite_file=sqlite)
-    export('train', data_dir=tmp_dir, model_dir=tmp_dir, sqlite_file=sqlite)
+    export(data_dir=tmp_dir, model_dir=tmp_dir, sqlite_file=sqlite)
+    export(data_dir=tmp_dir, model_dir=tmp_dir, sqlite_file=sqlite)
     train('xgb', data_dir=tmp_dir, model_dir=tmp_dir)
 
     assert path.exists(path.join(tmp_dir, 'xgb_model.pickle'))

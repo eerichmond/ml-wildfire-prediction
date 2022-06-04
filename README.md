@@ -31,10 +31,9 @@ One topic I am passionate about is the environment, especially the impact that c
 
 - Download [fires.sqlite from Google Cloud Storage](https://storage.googleapis.com/eer-wildfires/fires.sqlite) (19GB) to `./data/fires.sqlite`
 - `conda activate ml-wildfire`
-- `python -m app.trainer.export train` to generate `X_train.npy, y_train.npy, src/app/models/scalar.pickle` numpy
-  and `python -m app.trainer.export test` to generate `X_test.npy, x_test.npy`
-  array binaries. These are a separate steps because it takes 3+ hours to turn the ~27 million
-  geolocated weather points into a 13GB `X_train.npy`
+- `python -m app.trainer.export` to generate `X_train.npy, X_test.npy, y_train.npy, y_test.npy, scalar.pickle`
+  numpy array binaries. This is a separate steps because it takes 3+ hours to turn the ~27 million geolocated
+  weather points into a 13GB `X_train.npy`
 - `python -m app.trainer.train xgb` to generate the `app/models/xgb_model.pickle`
 
 ### Google Cloud Run Setup (onetime)

@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 import pandas as pd
 import sqlite3
@@ -50,7 +51,7 @@ dtype = {
 }
 
 
-def get_no_fires_df(min_date, max_date, sqlite_file):
+def get_no_fires_df(sqlite_file):
     conn = sqlite3.connect(sqlite_file)
 
     no_fires_df = pd.read_sql_query(f"""
@@ -103,18 +104,16 @@ def get_no_fires_df(min_date, max_date, sqlite_file):
   inner join soil_geo
     on soil_geo.long = weather_geo.long
     and soil_geo.lat = weather_geo.lat
-  where
-    {'1 = 1' if min_date is None else f"weather_geo.date >= '{min_date}'"}
-    and
-    {'1 = 1' if max_date is None else f"weather_geo.date < '{max_date}'"}
   """, conn, dtype=dtype)
 
     conn.close()
 
+    logging.info(f'Found {len(no_fires_df)} no fire data points')
+
     return no_fires_df
 
 
-def get_fires_df(min_date, max_date, sqlite_file):
+def get_fires_df(sqlite_file):
     conn = sqlite3.connect(sqlite_file)
 
     fires_df = pd.read_sql_query(f"""
@@ -172,15 +171,17 @@ def get_fires_df(min_date, max_date, sqlite_file):
     and fires_rollup.long = weather_geo.long
     and fires_rollup.lat = weather_geo.lat
     and fires_rollup.cause in ('Other causes', 'Natural', 'Power', 'Recreation')
-  where
-    {'1 = 1' if min_date is None else f"weather_geo.date >= '{min_date}'"}
-    and
-    {'1 = 1' if max_date is None else f"weather_geo.date < '{max_date}'"}
   """, conn, dtype=dtype)
 
     conn.close()
 
+    logging.info(f'Found {len(fires_df)} fire data points')
+
     return fires_df
+
+
+def get_df(sqlite_file):
+    return pd.concat([get_no_fires_df(sqlite_file), get_fires_df(sqlite_file)], axis=0)
 
 
 def one_hot_encode(orig_df):

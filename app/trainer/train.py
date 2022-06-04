@@ -18,10 +18,10 @@ def main(classifier: str, data_dir: str, model_dir: str):
             seed=42,
             use_label_encoder=False,
             objective='binary:logistic',
-            n_estimators=1000,
+            n_estimators=500,
             max_depth=9,
-            learning_rate=0.1,
-            gamma=0.3,
+            learning_rate=0.5,
+            gamma=0.6,
             eval_metric='error',
             colsample_bytree=0.4,
             scale_pos_weight=scale_pos_weight

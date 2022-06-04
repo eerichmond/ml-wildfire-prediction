@@ -4,7 +4,6 @@ from shutil import rmtree
 
 from app.trainer.export import main as export
 
-split_date = '2018-01-01'
 data_dir = path.join(path.dirname(__file__), '../fixtures/')
 tmp_dir = path.join(data_dir, 'tmp/')
 sqlite = path.join(data_dir, 'fires_sample.sqlite')
@@ -18,7 +17,7 @@ def run_around_tests():
 
 
 def test_export_test_npy():
-    export('test', data_dir=tmp_dir, model_dir=tmp_dir, sqlite_file=sqlite)
+    export(data_dir=tmp_dir, model_dir=tmp_dir, sqlite_file=sqlite)
 
     assert path.exists(path.join(tmp_dir, 'scaler.pickle'))
     assert path.exists(path.join(tmp_dir, 'y_test.npy'))
@@ -26,7 +25,7 @@ def test_export_test_npy():
 
 
 def test_export_train_npy():
-    export('train', data_dir=tmp_dir, model_dir=tmp_dir, sqlite_file=sqlite)
+    export(data_dir=tmp_dir, model_dir=tmp_dir, sqlite_file=sqlite)
 
     assert path.exists(path.join(tmp_dir, 'scaler.pickle'))
     assert path.exists(path.join(tmp_dir, 'y_train.npy'))
