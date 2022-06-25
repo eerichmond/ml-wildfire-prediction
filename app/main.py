@@ -11,6 +11,7 @@ from starlette.templating import Jinja2Templates
 import warnings
 
 from app.fetcher import get_drought_score, get_prior_fire_years, get_soil, get_weather
+from app.storage import get_file, upload_file
 from app.trainer.queries import one_hot_encode
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
