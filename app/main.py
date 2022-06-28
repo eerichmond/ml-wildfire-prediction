@@ -3,7 +3,6 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from joblib import load
 from json import dumps
-import numpy as np
 from os import path
 import pandas as pd
 from starlette.responses import FileResponse
