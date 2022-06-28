@@ -6,42 +6,96 @@ from shapely.geometry import Point
 import urllib.parse
 
 soil_file = path.join(path.dirname(__file__), './models/soil.csv')
-soil_df = read_csv(soil_file, index_col=['long', 'lat']).drop(
-    ['cultivated_land'], axis=1
-)
+soil_df = read_csv(soil_file).drop(['cultivated_land'], axis=1)
+lat_min = soil_df['lat'].min()
+lat_max = soil_df['lat'].max()
+long_min = soil_df['long'].min()
+# HACK: subtract 0.1 to bypass NASA 10 deg range limit
+long_max = soil_df['long'].max() - 0.1
+soil_df = soil_df.set_index(['long', 'lat'])
+
+weather_params = [
+    'QV2M', 'T2M_RANGE', 'WS10M', 'T2M', 'PS', 'T2MDEW', 'PRECTOT'
+]
+
+
+def map_weather_params(date: date, row: map):
+    i = date.strftime('%Y%m%d')
+
+    return {
+        'month': date.month,
+        'date': date,
+        'precipitation': row['PRECTOTCORR'][i],
+        'pressure': row['PS'][i],
+        'humidity_2m': row['QV2M'][i],
+        'temp_2m': row['T2M'][i],
+        'temp_dew_point_2m': row['T2MDEW'][i],
+        'temp_range_2m': row['T2M_RANGE'][i],
+        'wind_10m': row['WS10M'][i]
+    }
+
+
+def get_weather_all(date: date):
+    start = date.strftime('%Y%m%d')
+
+    params = {
+        'parameters': ','.join(weather_params),
+        'community': 'SB',
+        'latitude-min': lat_min,
+        'latitude-max': lat_max,
+        'longitude-min': long_min,
+        'longitude-max': long_max,
+        'start': start,
+        'end': start,
+        'format': 'JSON',
+    }
+    raw_json = requests.get(
+        'https://power.larc.nasa.gov/api/temporal/daily/regional', params
+    ).json()
+
+    weather_rows = []
+    for row in raw_json['features']:
+        long, lat, _ = row['geometry']['coordinates']
+
+        if ((long, lat) in soil_df.index):
+            print(f'({long}, {lat}) in soil_df.index = true')
+            weather = {
+                'long': long,
+                'lat': lat,
+                **map_weather_params(date, row['properties']['parameter'])
+            }
+
+            weather_rows.append(weather)
+        else:
+            print(f'({long}, {lat}) in soil_df.index = false')
+
+    return weather_rows
 
 
 def get_weather(date: date, long: float, lat: float):
-    params = ['QV2M', 'T2M_RANGE', 'WS10M', 'T2M', 'PS', 'T2MDEW', 'PRECTOT']
-
     start = date.strftime('%Y%m%d')
-    end = start
 
+    params = {
+        'parameters': ','.join(weather_params),
+        'community': 'SB',
+        'longitude': long,
+        'latitude': lat,
+        'start': start,
+        'end': start,
+        'format': 'JSON',
+    }
     raw_json = requests.get(
-        'https://power.larc.nasa.gov/api/temporal/daily/point',
-        {
-            'parameters': ','.join(params),
-            'community': 'SB',
-            'longitude': long,
-            'latitude': lat,
-            'start': start,
-            'end': end,
-            'format': 'JSON',
-        }
-    ).json()['properties']['parameter']
+        'https://power.larc.nasa.gov/api/temporal/daily/point', params
+    ).json()
+
+    weather = map_weather_params(
+        date, raw_json['properties']['parameter'], long, lat
+    )
 
     return {
         'long': round(long, 1),
         'lat': round(lat, 1),
-        'month': date.month,
-        'date': date,
-        'precipitation': raw_json['PRECTOTCORR'][start],
-        'pressure': raw_json['PS'][start],
-        'humidity_2m': raw_json['QV2M'][start],
-        'temp_2m': raw_json['T2M'][start],
-        'temp_dew_point_2m': raw_json['T2MDEW'][start],
-        'temp_range_2m': raw_json['T2M_RANGE'][start],
-        'wind_10m': raw_json['WS10M'][start]
+        **weather
     }
 
 
@@ -64,8 +118,8 @@ def get_drought_score(date: date, fips: int):
 
     item = raw_json[0]
 
-    return float(item['D0'])/100 + float(item['D1'])/100 + float(
-        item['D2'])/100 + float(item['D3'])/100 + float(item['D4'])/100
+    return float(item['D0'])/100 + float(item['D1'])/100 \
+        + float(item['D2'])/100 + float(item['D3'])/100 + float(item['D4'])/100
 
 
 def get_soil(long: float, lat: float):
