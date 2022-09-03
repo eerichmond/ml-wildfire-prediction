@@ -1,5 +1,4 @@
 from datetime import date
-from shapely.geometry import Point
 
 from app.fetcher import get_all_features
 
@@ -11,7 +10,6 @@ def test_get_all_features():
     assert weather_rows[0] == {
       'long': -124.3,
       'lat': 40.3,
-      'point': Point(-124.3, 40.3),
       'date': weather_date,
       'month': 8,
       'aspect_east': 0.2257,

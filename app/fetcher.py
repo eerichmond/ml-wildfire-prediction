@@ -7,15 +7,13 @@ import time
 import urllib.parse
 
 soil_file = path.join(path.dirname(__file__), './models/soil.csv')
-soil_df = read_csv(soil_file).drop(['cultivated_land'], axis=1)
+soil_df = read_csv(soil_file)
 lat_min = soil_df['lat'].min()
 lat_max = soil_df['lat'].max()
 long_min = soil_df['long'].min()
 
-# HACK: subtract 0.1 to bypass NASA 10 deg range limit
-long_max = soil_df['long'].max() - 0.1
-
-soil_df['point'] = soil_df.apply(lambda row: Point(row.long, row.lat), axis=1)
+# HACK: subtract 0.2 to bypass NASA 10 deg range limit
+long_max = int(soil_df['long'].max() * 10 - 2)/10
 soil_df = soil_df.set_index(['long', 'lat'])
 
 weather_params = [
@@ -60,28 +58,34 @@ def get_all_features(date: date):
 
     weather_rows = []
     for row in raw_json['features']:
-        long, lat, _ = row['geometry']['coordinates']
+        weather_long, weather_lat, _ = row['geometry']['coordinates']
         weather = {
-            'point': Point(long, lat),
+            'point': Point(weather_long, weather_lat),
             **map_weather_params(date, row['properties']['parameter'])
         }
 
         weather_rows.append(weather)
 
     features = []
-    for (long, lat), soil in soil_df.iterrows():
+    for row in soil_df.itertuples():
+        long = row.Index[0]
+        lat = row.Index[1]
+        soil = row._asdict()
+
         min_dist = 100
         closet_weather = None
         for weather in weather_rows:
-            dist = soil.point.distance(weather['point'])
+            soil_point = Point(long, lat)
+            dist = soil_point.distance(weather['point'])
             if (dist < min_dist):
                 closet_weather = weather
                 min_dist = dist
                 if (min_dist < 0.1):
                     break
 
-        drought_score = get_drought_score(date, soil['fips'])
+        drought_score = get_drought_score(date, row.fips)
         prior_fire_years = get_prior_fire_years(date, long, lat)
+
         feature = {
             'long': long,
             'lat': lat,
@@ -90,6 +94,9 @@ def get_all_features(date: date):
             **soil,
             **prior_fire_years
         }
+        del feature['Index']
+        del feature['point']
+
         features.append(feature)
 
         break
@@ -115,9 +122,7 @@ def get_weather(date: date, long: float, lat: float):
         'https://power.larc.nasa.gov/api/temporal/daily/point', params
     ).json()
 
-    weather = map_weather_params(
-        date, raw_json['properties']['parameter'], long, lat
-    )
+    weather = map_weather_params(date, raw_json['properties']['parameter'])
 
     return {
         'long': round(long, 1),
