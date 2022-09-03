@@ -13,8 +13,12 @@ One topic I am passionate about is the environment, especially the impact that c
 ### Getting Started
 
 - [Install Anaconda](https://docs.anaconda.com/anaconda/install/)
-- `conda create -name ml-wildfire python=3.8`
+- `conda create -name wildfire python=3.9`
+- `conda activate wildfire`
+- `brew install cmake`
 - `pip install -r requirements.txt`
+- [Install gcloud](https://cloud.google.com/sdk/docs/install)
+- `gcloud auth application-default login`
 - `yarn --cwd ./app/ build`
 
 ### Run Locally
@@ -24,7 +28,7 @@ One topic I am passionate about is the environment, especially the impact that c
 ### Run Tests
 
 - `coverage run --source=./app/ -m pytest -v && coverage report`
-- Watch tests `ptw --runner "pytest --testmon"`
+- Watch tests `ptw --runner pytest`
 - Generate coverage badge `coverage-badge -f -o coverage.svg`
 
 ### How to Train

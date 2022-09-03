@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import joblib
-import lightgbm as lgbm
 import logging
 from numpy import load
 import xgboost
@@ -27,22 +26,7 @@ def main(classifier: str, data_dir: str, model_dir: str):
             scale_pos_weight=scale_pos_weight
         )
     else:
-        model = lgbm.LGBMClassifier(
-            objective='binary',
-            num_leaves=20,
-            min_gain_to_split=7,
-            min_data_in_leaf=1000,
-            metric='binary_logloss',
-            max_depth=3,
-            max_bin=300,
-            lambda_l2=50,
-            lambda_l1=10,
-            learning_rate=0.2,
-            feature_fraction=0.5,
-            bagging_freq=1,
-            bagging_fraction=0.4,
-            scale_pos_weight=scale_pos_weight
-        )
+        raise Exception(f'Unknown classifier [{classifier}]')
 
     logging.info('Loading y_train ...')
     y_train = load(f'{data_dir}y_train.npy')

@@ -10,13 +10,13 @@ google-resumable-media==2.3.3
 googleapis-common-protos==1.56.3
 Jinja2==3.1.1
 joblib==1.1.0
-lightgbm==3.3.2
 numpy==1.22.3
 pandas==1.4.2
 protobuf==4.21.2
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pytest==7.1.1
+pytest-watch==4.2.0
 requests==2.27.1
 rsa==4.8
 scikit-learn==1.0.2
