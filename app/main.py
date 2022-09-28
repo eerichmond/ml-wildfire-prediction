@@ -10,7 +10,6 @@ from starlette.templating import Jinja2Templates
 import warnings
 
 from app.fetcher import get_drought_score, get_prior_fire_years, get_soil, get_weather
-from app.storage import get_file, upload_file
 from app.trainer.queries import one_hot_encode
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -27,11 +26,11 @@ scaler = load(scaler_file)
 
 
 @app.get('/')
-def home(*, request: Request, date: date = datetime.now() - timedelta(3), long: float = None, lat: float = None):
+def home(*, request: Request, date: date = datetime.now() - timedelta(3), long: float = 0.0, lat: float = 0.0):
     feature_json = None
     proba = 0.0
 
-    if (date and long and lat):
+    if (date and long != 0.0 and lat != 0.0):
         features = features_api(date, long, lat)
         proba = calculate_probablity(features)
         feature_json = dumps(
@@ -42,7 +41,12 @@ def home(*, request: Request, date: date = datetime.now() - timedelta(3), long: 
     return views.TemplateResponse(
         'home.html',
         {
-            'date': date, 'long': long, 'lat': lat, 'features': feature_json, 'proba': proba, 'request': request
+            'date': date,
+            'long': long if long != 0.0 else '',
+            'lat': lat if lat != 0.0 else '',
+            'features': feature_json,
+            'proba': proba,
+            'request': request
         }
     )
 

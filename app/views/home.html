@@ -1,94 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wildfire</title>
 
-    <link href="/public/index.css" rel="stylesheet" />
-    <link id="favicon" rel="icon" type="image/x-icon" href="/favicon.ico" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wildfire</title>
 
-  <body>
-    <div class="m-8 flex flex-col items-center space-y-4">
-      <div class="justify-center">
-        <h1 class="text-5xl">Wildfire Probablity</h1>
+  <link href="/public/index.css" rel="stylesheet" />
+  <link id="favicon" rel="icon" type="image/x-icon" href="/favicon.ico" />
+</head>
+
+<body>
+  <div class="m-8 flex flex-col items-center space-y-4">
+    <div class="justify-center">
+      <h1 class="text-5xl">Wildfire Probablity</h1>
+    </div>
+
+    <form class="flex flex-row items-center space-x-4">
+      <label for="date" class="">Date:</label>
+      <input name="date" id="date" type="date" required class="rounded border p-1.5"
+        value="{{ date.strftime('%Y-%m-%d') }}" />
+      <label for="long" class="">Long:</label>
+      <input name="long" id="long" type="number" step="0.000001" required maxlength="7" value="{{ long }}"
+        class="w-28 rounded border p-1.5 text-right" />
+      <label for="lat" class="">Lat:</label>
+      <input name="lat" id="lat" type="number" step="0.000001" required maxlength="7" value="{{ lat }}"
+        class="w-24 rounded border p-1.5 text-right" />
+      <button type="submit" class="rounded bg-teal-700 px-3 py-1.5 text-white shadow">Go</button>
+    </form>
+
+    <hr />
+
+    {% if features != None %}
+    <div class="flex w-full space-x-4">
+      <div class="w-1/3 space-y-1">
+        <h3 class="text-xl">Features</h3>
+        <div class="whitespace-pre rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm">{{features}}</div>
       </div>
-
-      <form class="flex flex-row items-center space-x-4">
-        <label for="date" class="">Date:</label>
-        <input
-          name="date"
-          id="date"
-          type="date"
-          required
-          class="rounded border p-1.5"
-          value="{{ date.strftime('%Y-%m-%d') }}"
-        />
-        <label for="long" class="">Long:</label>
-        <input
-          name="long"
-          id="long"
-          type="number"
-          step="0.000001"
-          required
-          maxlength="7"
-          value="{{ long }}"
-          class="w-28 rounded border p-1.5 text-right"
-        />
-        <label for="lat" class="">Lat:</label>
-        <input
-          name="lat"
-          id="lat"
-          type="number"
-          step="0.000001"
-          required
-          maxlength="7"
-          value="{{ lat }}"
-          class="w-24 rounded border p-1.5 text-right"
-        />
-        <button type="submit" class="rounded bg-teal-700 px-3 py-1.5 text-white shadow">Go</button>
-      </form>
-
-      <hr />
-
-      {% if features != None %}
-      <div class="flex w-full space-x-4">
-        <div class="w-1/3 space-y-1">
-          <h3 class="text-xl">Features</h3>
-          <div class="whitespace-pre rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm">{{features}}</div>
-        </div>
-        <div class="w-2/3 space-y-1">
-          <h3 class="text-xl">Probablity</h3>
-          <div class="rounded-lg border border-red-500 bg-gradient-to-r from-red-500 to-orange-300 p-4 text-white">
-            {{proba}} %
-          </div>
+      <div class="w-2/3 space-y-1">
+        <h3 class="text-xl">Probablity</h3>
+        <div class="rounded-lg border border-red-500 bg-gradient-to-r from-red-500 to-orange-300 p-4 text-white">
+          {{proba}} %
         </div>
       </div>
     </div>
-    {% endif %}
+  </div>
+  {% endif %}
 
-    <script>
-      window.addEventListener('load', () => {
-        const options = {
-          enableHighAccuracy: false,
-          maximumAge: 60 * 60 * 1000, // cache for 1 hour
-        };
+  <script>
+    window.addEventListener('load', () => {
+      const options = {
+        enableHighAccuracy: false,
+        maximumAge: 60 * 60 * 1000, // cache for 1 hour
+      };
 
-        const longInput = document.getElementById('long');
-        const latInput = document.getElementById('lat');
+      const longInput = document.getElementById('long');
+      const latInput = document.getElementById('lat');
 
-        if (!longInput.value && !latInput.value) {
-          navigator.geolocation.getCurrentPosition(
-            ({ coords }) => {
-              longInput.value = Math.round(coords.longitude * 1000) / 1000;
-              latInput.value = Math.round(coords.latitude * 1000) / 1000;
-            },
-            console.error,
-            options,
-          );
-        }
-      });
-    </script>
-  </body>
+      if (!longInput.value && !latInput.value) {
+        navigator.geolocation.getCurrentPosition(
+          ({ coords }) => {
+            longInput.value = Math.round(coords.longitude * 1000) / 1000;
+            latInput.value = Math.round(coords.latitude * 1000) / 1000;
+          },
+          console.error,
+          options,
+        );
+      }
+    });
+  </script>
+</body>
+
 </html>
